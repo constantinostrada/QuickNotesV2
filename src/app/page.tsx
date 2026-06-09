@@ -65,7 +65,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
             {notes.length === 0
               ? "No notes yet — create your first one below."
-              : `${notes.length} note${notes.length !== 1 ? "s" : ""}`}
+              : `${notes.length} note${notes.length !== 1 ? "s" : ""} · ${pinnedNotes.length} pinned`}
           </p>
         </div>
 
