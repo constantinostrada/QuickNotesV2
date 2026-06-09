@@ -24,22 +24,37 @@ import { seedRepository } from "../persistence/SeedData";
 
 // ─── Singleton instances ─────────────────────────────────────────────────────
 // In a real app with a DB, these would be scoped per-request where appropriate.
+//
+// IMPORTANT: Next.js evaluates this module in separate bundles for React Server
+// Components and for route handlers, so a plain module-level singleton would
+// yield two distinct in-memory repositories. A note created through the API
+// route would then be invisible to the page server component (and vice-versa).
+// We cache the wired container on `globalThis` so every module graph in the
+// same process shares a single repository instance — making a freshly created
+// note appear in the listing immediately on refresh.
 
-const noteRepository = new InMemoryNoteRepository();
-const uuidGenerator = new UuidGenerator();
+function buildContainer() {
+  const noteRepository = new InMemoryNoteRepository();
+  const uuidGenerator = new UuidGenerator();
 
-// Seed demo data (resolves immediately if already seeded).
-// We do not await here to avoid blocking module initialisation;
-// the promise is fire-and-forget at startup.
-seedRepository(noteRepository).catch(console.error);
+  // Seed demo data (resolves immediately if already seeded).
+  // Fire-and-forget so we don't block module initialisation.
+  seedRepository(noteRepository).catch(console.error);
 
-// ─── Use case instances ──────────────────────────────────────────────────────
+  return {
+    createNote: new CreateNoteUseCase(noteRepository, uuidGenerator),
+    getNote: new GetNoteUseCase(noteRepository),
+    listNotes: new ListNotesUseCase(noteRepository),
+    updateNote: new UpdateNoteUseCase(noteRepository),
+    deleteNote: new DeleteNoteUseCase(noteRepository),
+    togglePinNote: new TogglePinNoteUseCase(noteRepository),
+  } as const;
+}
 
-export const container = {
-  createNote: new CreateNoteUseCase(noteRepository, uuidGenerator),
-  getNote: new GetNoteUseCase(noteRepository),
-  listNotes: new ListNotesUseCase(noteRepository),
-  updateNote: new UpdateNoteUseCase(noteRepository),
-  deleteNote: new DeleteNoteUseCase(noteRepository),
-  togglePinNote: new TogglePinNoteUseCase(noteRepository),
-} as const;
+const globalForContainer = globalThis as typeof globalThis & {
+  __quicknotesContainer?: ReturnType<typeof buildContainer>;
+};
+
+export const container =
+  globalForContainer.__quicknotesContainer ??
+  (globalForContainer.__quicknotesContainer = buildContainer());
