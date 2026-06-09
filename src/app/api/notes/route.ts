@@ -19,6 +19,7 @@ const controller = new NotesController(
   container.updateNote,
   container.deleteNote,
   container.togglePinNote,
+  container.duplicateNote,
 );
 
 export async function GET(request: NextRequest) {

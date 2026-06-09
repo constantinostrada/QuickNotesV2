@@ -18,6 +18,7 @@ import type { ListNotesDto } from "@/application/use-cases/ListNotesUseCase";
 import type { UpdateNoteDto } from "@/application/use-cases/UpdateNoteUseCase";
 import type { CreateNoteUseCase } from "@/application/use-cases/CreateNoteUseCase";
 import type { DeleteNoteUseCase } from "@/application/use-cases/DeleteNoteUseCase";
+import type { DuplicateNoteUseCase } from "@/application/use-cases/DuplicateNoteUseCase";
 import type { GetNoteUseCase } from "@/application/use-cases/GetNoteUseCase";
 import type { ListNotesUseCase } from "@/application/use-cases/ListNotesUseCase";
 import type { TogglePinNoteUseCase } from "@/application/use-cases/TogglePinNoteUseCase";
@@ -33,6 +34,7 @@ export class NotesController {
     private readonly updateNote: UpdateNoteUseCase,
     private readonly deleteNote: DeleteNoteUseCase,
     private readonly togglePinNote: TogglePinNoteUseCase,
+    private readonly duplicateNote: DuplicateNoteUseCase,
   ) {}
 
   // GET /api/notes?query=...&tags=...&pinnedOnly=true
@@ -100,6 +102,16 @@ export class NotesController {
     try {
       await this.deleteNote.execute({ id });
       return noContent();
+    } catch (err) {
+      return errorResponse(err);
+    }
+  }
+
+  // POST /api/notes/[id]/duplicate
+  async handleDuplicate(_request: NextRequest, id: string) {
+    try {
+      const note = await this.duplicateNote.execute({ id });
+      return created(note);
     } catch (err) {
       return errorResponse(err);
     }

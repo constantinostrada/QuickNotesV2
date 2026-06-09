@@ -1,7 +1,7 @@
 /**
- * /api/notes/[id]/pin — toggle pin state.
+ * /api/notes/[id]/duplicate — duplicate a note.
  *
- * POST → toggle pin (pin if unpinned, unpin if pinned)
+ * POST → create an independent copy of the note (own id, title + " (copia)")
  *
  * Layer: interfaces (Next.js App Router route handler)
  */
@@ -24,5 +24,5 @@ const controller = new NotesController(
 type RouteParams = { params: { id: string } };
 
 export async function POST(request: NextRequest, { params }: RouteParams) {
-  return controller.handleTogglePin(request, params.id);
+  return controller.handleDuplicate(request, params.id);
 }

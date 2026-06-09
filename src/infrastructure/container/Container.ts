@@ -13,6 +13,7 @@
 
 import { CreateNoteUseCase } from "@/application/use-cases/CreateNoteUseCase";
 import { DeleteNoteUseCase } from "@/application/use-cases/DeleteNoteUseCase";
+import { DuplicateNoteUseCase } from "@/application/use-cases/DuplicateNoteUseCase";
 import { GetNoteUseCase } from "@/application/use-cases/GetNoteUseCase";
 import { ListNotesUseCase } from "@/application/use-cases/ListNotesUseCase";
 import { TogglePinNoteUseCase } from "@/application/use-cases/TogglePinNoteUseCase";
@@ -50,6 +51,7 @@ seedRepository(noteRepository).catch(console.error);
 
 export const container = {
   createNote: new CreateNoteUseCase(noteRepository, uuidGenerator),
+  duplicateNote: new DuplicateNoteUseCase(noteRepository, uuidGenerator),
   getNote: new GetNoteUseCase(noteRepository),
   listNotes: new ListNotesUseCase(noteRepository),
   updateNote: new UpdateNoteUseCase(noteRepository),

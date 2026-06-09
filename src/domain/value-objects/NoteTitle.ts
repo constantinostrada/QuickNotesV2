@@ -12,6 +12,7 @@
 import { DomainError } from "../errors/DomainError";
 
 const MAX_LENGTH = 200;
+const COPY_SUFFIX = " (copia)";
 
 export class NoteTitle {
   private readonly _value: string;
@@ -31,6 +32,17 @@ export class NoteTitle {
 
   static create(value: string): NoteTitle {
     return new NoteTitle(value);
+  }
+
+  /**
+   * Derives the title for a duplicated note by appending " (copia)".
+   * The base is truncated when necessary so the result respects MAX_LENGTH.
+   */
+  duplicated(): NoteTitle {
+    const maxBaseLength = MAX_LENGTH - COPY_SUFFIX.length;
+    const base =
+      this._value.length > maxBaseLength ? this._value.slice(0, maxBaseLength) : this._value;
+    return new NoteTitle(base + COPY_SUFFIX);
   }
 
   get value(): string {
