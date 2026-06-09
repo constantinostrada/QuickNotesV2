@@ -10,11 +10,14 @@
 
 import { Suspense } from "react";
 
+import type { NoteSortOrder } from "@/domain/repositories/INoteRepository";
+
 import { container } from "@/infrastructure/container/Container";
 
 import { CreateNoteForm } from "@/interfaces/components/CreateNoteForm";
 import { NoteCard } from "@/interfaces/components/NoteCard";
 import { SearchBar } from "@/interfaces/components/SearchBar";
+import { SortControl } from "@/interfaces/components/SortControl";
 import { EmptyState } from "@/interfaces/components/EmptyState";
 
 interface HomePageProps {
@@ -25,7 +28,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const query =
     typeof searchParams?.query === "string" ? searchParams.query : undefined;
 
-  const notes = await container.listNotes.execute({ query });
+  const sort: NoteSortOrder =
+    searchParams?.sort === "alphabetical" ? "alphabetical" : "recent";
+
+  const notes = await container.listNotes.execute({ query, sort });
 
   const pinnedNotes = notes.filter((n) => n.isPinned);
   const unpinnedNotes = notes.filter((n) => !n.isPinned);
@@ -44,9 +50,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         </div>
       </div>
 
-      {/* Search */}
+      {/* Search + sort */}
       <Suspense>
-        <SearchBar defaultValue={query} />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex-1">
+            <SearchBar defaultValue={query} />
+          </div>
+          <SortControl value={sort} />
+        </div>
       </Suspense>
 
       {/* Create note form */}

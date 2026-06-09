@@ -9,7 +9,7 @@
  */
 
 import { useCallback, useTransition } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 interface SearchBarProps {
   defaultValue?: string;
@@ -18,19 +18,26 @@ interface SearchBarProps {
 export function SearchBar({ defaultValue = "" }: SearchBarProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      const params = new URLSearchParams();
-      if (value) params.set("query", value);
+      // Preserve other params (e.g. ?sort=) while updating the query.
+      const params = new URLSearchParams(searchParams.toString());
+      if (value) {
+        params.set("query", value);
+      } else {
+        params.delete("query");
+      }
 
+      const queryString = params.toString();
       startTransition(() => {
-        router.replace(`${pathname}?${params.toString()}`);
+        router.replace(queryString ? `${pathname}?${queryString}` : pathname);
       });
     },
-    [router, pathname],
+    [router, pathname, searchParams],
   );
 
   return (
