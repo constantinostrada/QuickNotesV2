@@ -11,7 +11,7 @@ import type { Note } from "../entities/Note";
 import type { NoteId } from "../value-objects/NoteId";
 
 export interface NoteSearchCriteria {
-  /** Free-text search against title and content. */
+  /** Case-insensitive substring match against the note title. */
   query?: string;
   /** Filter by one or more tag values (AND semantics). */
   tags?: string[];

@@ -32,11 +32,7 @@ export class NoteSearchService {
 
     if (criteria.query && criteria.query.trim().length > 0) {
       const needle = criteria.query.trim().toLowerCase();
-      results = results.filter(
-        (note) =>
-          note.title.value.toLowerCase().includes(needle) ||
-          note.content.value.toLowerCase().includes(needle),
-      );
+      results = results.filter((note) => note.title.value.toLowerCase().includes(needle));
     }
 
     return results;

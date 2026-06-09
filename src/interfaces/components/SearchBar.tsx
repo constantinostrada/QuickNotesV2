@@ -1,9 +1,10 @@
 "use client";
 
 /**
- * SearchBar — client component for full-text note search.
+ * SearchBar — client component for live note search by title.
  *
- * Updates the URL's ?query= param which triggers a server-side re-fetch.
+ * Updates the URL's ?query= param on every keystroke, which triggers a
+ * server-side re-fetch so the list filters live as the user types.
  * Layer: interfaces
  */
 

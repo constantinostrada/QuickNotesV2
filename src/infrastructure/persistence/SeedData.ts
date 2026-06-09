@@ -30,7 +30,7 @@ const SEED_NOTES: Array<{
       "- Create, edit and delete notes\n" +
       "- Pin important notes to the top\n" +
       "- Organise with tags\n" +
-      "- Full-text search across titles and content",
+      "- Search notes by title",
     tags: ["welcome", "getting-started"],
     isPinned: true,
     createdAt: new Date("2024-01-01T10:00:00.000Z"),
