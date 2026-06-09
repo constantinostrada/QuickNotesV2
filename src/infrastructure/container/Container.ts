@@ -24,8 +24,21 @@ import { seedRepository } from "../persistence/SeedData";
 
 // ─── Singleton instances ─────────────────────────────────────────────────────
 // In a real app with a DB, these would be scoped per-request where appropriate.
+//
+// The in-memory repository MUST be a true process-wide singleton: Next.js
+// evaluates this module in separate bundles for React Server Components and
+// route handlers, so a plain module-level `new` can yield two divergent stores
+// (a note created via POST /api/notes would then never appear in the RSC list).
+// Pinning the instance on globalThis guarantees both module graphs share state.
 
-const noteRepository = new InMemoryNoteRepository();
+const globalForContainer = globalThis as typeof globalThis & {
+  __quicknotesNoteRepository?: InMemoryNoteRepository;
+};
+
+const noteRepository =
+  globalForContainer.__quicknotesNoteRepository ??
+  (globalForContainer.__quicknotesNoteRepository = new InMemoryNoteRepository());
+
 const uuidGenerator = new UuidGenerator();
 
 // Seed demo data (resolves immediately if already seeded).
