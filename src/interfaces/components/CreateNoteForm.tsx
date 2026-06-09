@@ -115,14 +115,14 @@ export function CreateNoteForm() {
                 placeholder="Tags: work, ideas, personal…"
                 className="input text-sm"
               />
-              <p className="mt-1 text-xs text-stone-400">Separate tags with commas.</p>
+              <p className="mt-1 text-xs text-stone-400 dark:text-stone-500">Separate tags with commas.</p>
             </div>
           </div>
         )}
 
         {/* Error */}
         {error && (
-          <p id="create-note-error" role="alert" className="text-sm text-red-600">
+          <p id="create-note-error" role="alert" className="text-sm text-red-600 dark:text-red-400">
             {error}
           </p>
         )}

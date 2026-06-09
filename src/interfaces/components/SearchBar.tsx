@@ -43,7 +43,7 @@ export function SearchBar({ defaultValue = "" }: SearchBarProps) {
   return (
     <div className="relative">
       {/* Search icon */}
-      <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-stone-400">
+      <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-stone-400 dark:text-stone-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"

@@ -61,8 +61,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {/* Page header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">My Notes</h1>
-          <p className="mt-1 text-sm text-stone-500">
+          <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100">My Notes</h1>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
             {notes.length === 0
               ? "No notes yet — create your first one below."
               : `${notes.length} note${notes.length !== 1 ? "s" : ""}`}
@@ -85,11 +85,13 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {/* Active tag filter indicator */}
       {activeTag && (
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-stone-500">Filtering by</span>
-          <span className="tag-badge bg-brand-100 text-brand-700">{activeTag}</span>
+          <span className="text-stone-500 dark:text-stone-400">Filtering by</span>
+          <span className="tag-badge bg-brand-100 text-brand-700 dark:bg-brand-500/20 dark:text-brand-300">
+            {activeTag}
+          </span>
           <Link
             href={clearFilterHref}
-            className="font-medium text-brand-600 transition-colors hover:text-brand-700 hover:underline"
+            className="font-medium text-brand-600 transition-colors hover:text-brand-700 hover:underline dark:text-brand-400 dark:hover:text-brand-300"
           >
             Clear filter
           </Link>
@@ -117,7 +119,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         <div className="space-y-6">
           {pinnedNotes.length > 0 && (
             <section aria-label="Pinned notes">
-              <h2 className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-stone-400">
+              <h2 className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-stone-400 dark:text-stone-500">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -146,7 +148,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           {unpinnedNotes.length > 0 && (
             <section aria-label="All notes">
               {pinnedNotes.length > 0 && (
-                <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-stone-400">
+                <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-stone-400 dark:text-stone-500">
                   Other notes
                 </h2>
               )}

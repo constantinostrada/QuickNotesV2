@@ -35,7 +35,7 @@ export default async function NotePage({ params }: NotePageProps) {
         {/* Back link */}
         <a
           href="/"
-          className="mb-6 inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 transition-colors"
+          className="mb-6 inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 transition-colors dark:text-stone-400 dark:hover:text-stone-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ export default async function NotePage({ params }: NotePageProps) {
         </div>
 
         {/* Metadata footer */}
-        <p className="mt-4 text-center text-xs text-stone-400">
+        <p className="mt-4 text-center text-xs text-stone-400 dark:text-stone-500">
           Created{" "}
           {new Date(note.createdAt).toLocaleDateString("en-GB", {
             day: "numeric",

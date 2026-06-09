@@ -49,7 +49,7 @@ export function SortControl({ value = "recent" }: SortControlProps) {
 
   return (
     <div
-      className="inline-flex shrink-0 rounded-lg border border-stone-300 bg-white p-0.5"
+      className="inline-flex shrink-0 rounded-lg border border-stone-300 bg-white p-0.5 dark:border-stone-600 dark:bg-stone-800"
       role="group"
       aria-label="Sort notes"
       aria-busy={isPending}
@@ -65,7 +65,7 @@ export function SortControl({ value = "recent" }: SortControlProps) {
             className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 ${
               isActive
                 ? "bg-brand-500 text-white"
-                : "text-stone-600 hover:bg-stone-50"
+                : "text-stone-600 hover:bg-stone-50 dark:text-stone-300 dark:hover:bg-stone-700"
             }`}
           >
             {option.label}

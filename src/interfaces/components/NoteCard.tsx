@@ -67,7 +67,7 @@ export function NoteCard({ note, activeTag }: NoteCardProps) {
         <a
           href={`/notes/${note.id}`}
           onClick={(e) => e.stopPropagation()}
-          className="flex-1 text-sm font-semibold text-stone-900 hover:text-brand-600 transition-colors line-clamp-2"
+          className="flex-1 text-sm font-semibold text-stone-900 hover:text-brand-600 transition-colors line-clamp-2 dark:text-stone-100 dark:hover:text-brand-400"
         >
           {note.title}
         </a>
@@ -79,8 +79,8 @@ export function NoteCard({ note, activeTag }: NoteCardProps) {
           title={note.isPinned ? "Unpin" : "Pin"}
           className={`shrink-0 rounded p-1 transition-colors ${
             note.isPinned
-              ? "text-brand-500 hover:text-brand-700"
-              : "text-stone-300 hover:text-stone-500"
+              ? "text-brand-500 hover:text-brand-700 dark:hover:text-brand-400"
+              : "text-stone-300 hover:text-stone-500 dark:text-stone-600 dark:hover:text-stone-400"
           }`}
         >
           <svg
@@ -101,7 +101,7 @@ export function NoteCard({ note, activeTag }: NoteCardProps) {
 
       {/* Content preview */}
       {note.contentPreview && (
-        <p className="mt-2 flex-1 text-xs text-stone-500 line-clamp-3">{note.contentPreview}</p>
+        <p className="mt-2 flex-1 text-xs text-stone-500 line-clamp-3 dark:text-stone-400">{note.contentPreview}</p>
       )}
 
       {/* Tags — click to filter the list by that tag */}
@@ -129,10 +129,10 @@ export function NoteCard({ note, activeTag }: NoteCardProps) {
       )}
 
       {/* Footer: date + actions */}
-      <div className="mt-4 flex items-center justify-between border-t border-stone-100 pt-3">
+      <div className="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 dark:border-stone-700">
         <time
           dateTime={note.updatedAt}
-          className="text-xs text-stone-400"
+          className="text-xs text-stone-400 dark:text-stone-500"
           title={new Date(note.updatedAt).toLocaleString()}
         >
           {new Date(note.updatedAt).toLocaleDateString("en-GB", {
@@ -147,7 +147,7 @@ export function NoteCard({ note, activeTag }: NoteCardProps) {
             disabled={isDeleting || isPending}
             aria-label={`Duplicate note "${note.title}"`}
             title="Duplicate"
-            className="rounded p-1 text-stone-300 hover:text-brand-500 transition-colors disabled:opacity-40"
+            className="rounded p-1 text-stone-300 hover:text-brand-500 transition-colors disabled:opacity-40 dark:text-stone-600 dark:hover:text-brand-400"
           >
             <span aria-hidden="true" className="text-sm leading-none">
               📋
@@ -158,7 +158,7 @@ export function NoteCard({ note, activeTag }: NoteCardProps) {
             onClick={handleDelete}
             disabled={isDeleting || isPending}
             aria-label={`Delete note "${note.title}"`}
-            className="rounded p-1 text-stone-300 hover:text-red-500 transition-colors disabled:opacity-40"
+            className="rounded p-1 text-stone-300 hover:text-red-500 transition-colors disabled:opacity-40 dark:text-stone-600 dark:hover:text-red-400"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

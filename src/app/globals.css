@@ -11,6 +11,14 @@
     --color-muted:      120 113 108;  /* stone-500 */
   }
 
+  .dark {
+    --color-background:  28  25  23;  /* stone-900 */
+    --color-surface:     41  37  36;  /* stone-800 */
+    --color-border:      68  64  60;  /* stone-700 */
+    --color-text:       245 245 244;  /* stone-100 */
+    --color-muted:      168 162 158;  /* stone-400 */
+  }
+
   html {
     @apply antialiased;
   }
@@ -18,16 +26,18 @@
   body {
     background-color: rgb(var(--color-background));
     color: rgb(var(--color-text));
+    @apply transition-colors duration-200;
   }
 
   * {
-    @apply border-stone-200;
+    @apply border-stone-200 dark:border-stone-700;
   }
 }
 
 @layer components {
   .card {
-    @apply rounded-xl border bg-white shadow-sm transition-shadow duration-200 hover:shadow-md;
+    @apply rounded-xl border bg-white shadow-sm transition-shadow duration-200 hover:shadow-md
+           dark:bg-stone-800 dark:shadow-none dark:hover:shadow-lg dark:hover:shadow-black/20;
   }
 
   .btn {
@@ -43,12 +53,14 @@
 
   .btn-secondary {
     @apply btn bg-white text-stone-700 border border-stone-300 hover:bg-stone-50
-           focus-visible:ring-stone-400;
+           focus-visible:ring-stone-400
+           dark:bg-stone-800 dark:text-stone-200 dark:border-stone-600 dark:hover:bg-stone-700;
   }
 
   .btn-ghost {
     @apply btn bg-transparent text-stone-600 hover:bg-stone-100
-           focus-visible:ring-stone-400;
+           focus-visible:ring-stone-400
+           dark:text-stone-300 dark:hover:bg-stone-700;
   }
 
   .btn-danger {
@@ -59,11 +71,14 @@
     @apply w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm
            placeholder:text-stone-400
            focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-300
-           disabled:cursor-not-allowed disabled:opacity-50;
+           disabled:cursor-not-allowed disabled:opacity-50
+           dark:border-stone-600 dark:bg-stone-900 dark:text-stone-100
+           dark:placeholder:text-stone-500 dark:focus:border-brand-500 dark:focus:ring-brand-500/40;
   }
 
   .tag-badge {
     @apply inline-flex items-center rounded-full bg-stone-100 px-2.5 py-0.5
-           text-xs font-medium text-stone-600;
+           text-xs font-medium text-stone-600
+           dark:bg-stone-700 dark:text-stone-300;
   }
 }

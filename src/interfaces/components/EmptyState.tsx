@@ -13,14 +13,14 @@ interface EmptyStateProps {
 export function EmptyState({ title, description }: EmptyStateProps) {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-stone-300 py-16 text-center"
+      className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-stone-300 py-16 text-center dark:border-stone-600"
       role="status"
     >
       <span className="text-4xl" aria-hidden="true">
         🗒️
       </span>
-      <h3 className="text-base font-semibold text-stone-700">{title}</h3>
-      <p className="max-w-xs text-sm text-stone-400">{description}</p>
+      <h3 className="text-base font-semibold text-stone-700 dark:text-stone-200">{title}</h3>
+      <p className="max-w-xs text-sm text-stone-400 dark:text-stone-500">{description}</p>
     </div>
   );
 }

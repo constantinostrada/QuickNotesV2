@@ -80,7 +80,7 @@ export function EditNoteForm({ note }: EditNoteFormProps) {
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       {/* Title */}
       <div>
-        <label htmlFor="edit-title" className="mb-1 block text-xs font-medium text-stone-500">
+        <label htmlFor="edit-title" className="mb-1 block text-xs font-medium text-stone-500 dark:text-stone-400">
           Title
         </label>
         <input
@@ -99,7 +99,7 @@ export function EditNoteForm({ note }: EditNoteFormProps) {
 
       {/* Content */}
       <div>
-        <label htmlFor="edit-content" className="mb-1 block text-xs font-medium text-stone-500">
+        <label htmlFor="edit-content" className="mb-1 block text-xs font-medium text-stone-500 dark:text-stone-400">
           Content
         </label>
         <textarea
@@ -117,7 +117,7 @@ export function EditNoteForm({ note }: EditNoteFormProps) {
 
       {/* Tags */}
       <div>
-        <label htmlFor="edit-tags" className="mb-1 block text-xs font-medium text-stone-500">
+        <label htmlFor="edit-tags" className="mb-1 block text-xs font-medium text-stone-500 dark:text-stone-400">
           Tags
         </label>
         <input
@@ -131,23 +131,23 @@ export function EditNoteForm({ note }: EditNoteFormProps) {
           className="input text-sm"
           placeholder="work, ideas, personal…"
         />
-        <p className="mt-1 text-xs text-stone-400">Separate tags with commas.</p>
+        <p className="mt-1 text-xs text-stone-400 dark:text-stone-500">Separate tags with commas.</p>
       </div>
 
       {/* Feedback */}
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
           {error}
         </p>
       )}
       {successMessage && (
-        <p role="status" className="text-sm text-green-600">
+        <p role="status" className="text-sm text-green-600 dark:text-green-400">
           {successMessage}
         </p>
       )}
 
       {/* Action bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-stone-100 pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-stone-100 pt-4 dark:border-stone-700">
         <div className="flex gap-2">
           <button
             type="button"

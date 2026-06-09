@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { ThemeToggle } from "@/interfaces/components/ThemeToggle";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,13 +14,23 @@ export const metadata: Metadata = {
   keywords: ["notes", "note-taking", "quicknotes"],
 };
 
+/**
+ * Applied before paint (in <head>) so the saved theme is active on first
+ * render — avoids a flash of the wrong theme. Falls back to the OS preference
+ * when the user hasn't chosen one yet. Kept in sync with ThemeToggle's key.
+ */
+const themeInitScript = `(function(){try{var t=localStorage.getItem('quicknotes-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-stone-50">
-        <header className="border-b border-stone-200 bg-white">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="min-h-screen bg-stone-50 dark:bg-stone-900">
+        <header className="border-b border-stone-200 bg-white dark:border-stone-700 dark:bg-stone-800">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-            <a href="/" className="flex items-center gap-2 text-lg font-bold text-stone-900">
+            <a href="/" className="flex items-center gap-2 text-lg font-bold text-stone-900 dark:text-stone-100">
               {/* Lightning-bolt icon (inline SVG — no icon library dependency) */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -35,16 +47,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </svg>
               QuickNotes
             </a>
-            <span className="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700">
-              Beta
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-500/20 dark:text-brand-300">
+                Beta
+              </span>
+              <ThemeToggle />
+            </div>
           </div>
         </header>
 
         <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
 
-        <footer className="border-t border-stone-200 bg-white mt-16">
-          <div className="mx-auto max-w-5xl px-4 py-4 text-center text-xs text-stone-400">
+        <footer className="border-t border-stone-200 bg-white mt-16 dark:border-stone-700 dark:bg-stone-800">
+          <div className="mx-auto max-w-5xl px-4 py-4 text-center text-xs text-stone-400 dark:text-stone-500">
             QuickNotes — built with Next.js, Tailwind CSS &amp; Clean Architecture
           </div>
         </footer>
