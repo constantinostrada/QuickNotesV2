@@ -21,14 +21,18 @@ export function NoteCard({ note }: NoteCardProps) {
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleTogglePin = async () => {
+  const openNote = () => router.push(`/notes/${note.id}`);
+
+  const handleTogglePin = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     startTransition(async () => {
       await fetch(`/api/notes/${note.id}/pin`, { method: "POST" });
       router.refresh();
     });
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!window.confirm(`Delete "${note.title}"?`)) return;
     setIsDeleting(true);
     await fetch(`/api/notes/${note.id}`, { method: "DELETE" });
@@ -37,13 +41,15 @@ export function NoteCard({ note }: NoteCardProps) {
 
   return (
     <article
-      className={`card flex h-full flex-col p-4 animate-slide-up ${isDeleting ? "opacity-50" : ""}`}
+      onClick={openNote}
+      className={`card flex h-full cursor-pointer flex-col p-4 animate-slide-up ${isDeleting ? "opacity-50" : ""}`}
       aria-label={`Note: ${note.title}`}
     >
       {/* Title + pin button */}
       <div className="flex items-start justify-between gap-2">
         <a
           href={`/notes/${note.id}`}
+          onClick={(e) => e.stopPropagation()}
           className="flex-1 text-sm font-semibold text-stone-900 hover:text-brand-600 transition-colors line-clamp-2"
         >
           {note.title}
