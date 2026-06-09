@@ -9,6 +9,7 @@
  */
 
 import { Suspense } from "react";
+import Link from "next/link";
 
 import type { NoteSortOrder } from "@/domain/repositories/INoteRepository";
 
@@ -32,10 +33,28 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const sort: NoteSortOrder =
     searchParams?.sort === "alphabetical" ? "alphabetical" : "recent";
 
-  const notes = await container.listNotes.execute({ query, sort });
+  const rawTags = searchParams?.tags;
+  const activeTag =
+    typeof rawTags === "string"
+      ? rawTags
+      : Array.isArray(rawTags)
+        ? rawTags[0]
+        : undefined;
+
+  const notes = await container.listNotes.execute({
+    query,
+    sort,
+    tags: activeTag ? [activeTag] : undefined,
+  });
 
   const pinnedNotes = notes.filter((n) => n.isPinned);
   const unpinnedNotes = notes.filter((n) => !n.isPinned);
+
+  // "Clear filter" returns to the full list while preserving search + sort.
+  const clearParams = new URLSearchParams();
+  if (query) clearParams.set("query", query);
+  if (sort === "alphabetical") clearParams.set("sort", sort);
+  const clearFilterHref = clearParams.toString() ? `/?${clearParams.toString()}` : "/";
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -63,6 +82,20 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         </div>
       </Suspense>
 
+      {/* Active tag filter indicator */}
+      {activeTag && (
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-stone-500">Filtering by</span>
+          <span className="tag-badge bg-brand-100 text-brand-700">{activeTag}</span>
+          <Link
+            href={clearFilterHref}
+            className="font-medium text-brand-600 transition-colors hover:text-brand-700 hover:underline"
+          >
+            Clear filter
+          </Link>
+        </div>
+      )}
+
       {/* Create note form */}
       <section aria-label="Create a new note">
         <CreateNoteForm />
@@ -71,11 +104,13 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {/* Notes grid */}
       {notes.length === 0 ? (
         <EmptyState
-          title={query ? "No matching notes" : "No notes yet"}
+          title={query || activeTag ? "No matching notes" : "No notes yet"}
           description={
-            query
-              ? `No notes matched "${query}". Try a different search.`
-              : "Create your first note using the form above."
+            activeTag
+              ? `No notes tagged "${activeTag}".`
+              : query
+                ? `No notes matched "${query}". Try a different search.`
+                : "Create your first note using the form above."
           }
         />
       ) : (
@@ -101,7 +136,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
                 {pinnedNotes.map((note) => (
                   <li key={note.id}>
-                    <NoteCard note={note} />
+                    <NoteCard note={note} activeTag={activeTag} />
                   </li>
                 ))}
               </ul>
@@ -118,7 +153,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
                 {unpinnedNotes.map((note) => (
                   <li key={note.id}>
-                    <NoteCard note={note} />
+                    <NoteCard note={note} activeTag={activeTag} />
                   </li>
                 ))}
               </ul>

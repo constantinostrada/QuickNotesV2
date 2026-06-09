@@ -8,20 +8,31 @@
  */
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import type { NoteDto } from "@/application/dtos/NoteDto";
 
 interface NoteCardProps {
   note: NoteDto;
+  /** Currently active tag filter, if any — highlights the matching badge. */
+  activeTag?: string;
 }
 
-export function NoteCard({ note }: NoteCardProps) {
+export function NoteCard({ note, activeTag }: NoteCardProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const openNote = () => router.push(`/notes/${note.id}`);
+
+  const handleTagClick = (e: React.MouseEvent, tag: string) => {
+    e.stopPropagation();
+    // Preserve other params (e.g. ?sort=) while filtering by this tag.
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tags", tag);
+    router.push(`/?${params.toString()}`);
+  };
 
   const handleTogglePin = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -93,14 +104,27 @@ export function NoteCard({ note }: NoteCardProps) {
         <p className="mt-2 flex-1 text-xs text-stone-500 line-clamp-3">{note.contentPreview}</p>
       )}
 
-      {/* Tags */}
+      {/* Tags — click to filter the list by that tag */}
       {note.tags.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1">
-          {note.tags.map((tag) => (
-            <span key={tag} className="tag-badge">
-              {tag}
-            </span>
-          ))}
+          {note.tags.map((tag) => {
+            const isActive = tag === activeTag;
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={(e) => handleTagClick(e, tag)}
+                aria-label={`Filter by tag "${tag}"`}
+                aria-pressed={isActive}
+                title={`Filter by "${tag}"`}
+                className={`tag-badge cursor-pointer transition-colors hover:bg-brand-100 hover:text-brand-700 ${
+                  isActive ? "bg-brand-100 text-brand-700 ring-1 ring-brand-300" : ""
+                }`}
+              >
+                {tag}
+              </button>
+            );
+          })}
         </div>
       )}
 
