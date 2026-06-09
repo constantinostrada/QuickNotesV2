@@ -18,6 +18,7 @@ import { CreateNoteForm } from "@/interfaces/components/CreateNoteForm";
 import { NoteCard } from "@/interfaces/components/NoteCard";
 import { SearchBar } from "@/interfaces/components/SearchBar";
 import { SortControl } from "@/interfaces/components/SortControl";
+import { ExportButton } from "@/interfaces/components/ExportButton";
 import { EmptyState } from "@/interfaces/components/EmptyState";
 
 interface HomePageProps {
@@ -48,6 +49,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               : `${notes.length} note${notes.length !== 1 ? "s" : ""}`}
           </p>
         </div>
+
+        <ExportButton />
       </div>
 
       {/* Search + sort */}

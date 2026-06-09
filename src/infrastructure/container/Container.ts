@@ -14,6 +14,7 @@
 import { CreateNoteUseCase } from "@/application/use-cases/CreateNoteUseCase";
 import { DeleteNoteUseCase } from "@/application/use-cases/DeleteNoteUseCase";
 import { DuplicateNoteUseCase } from "@/application/use-cases/DuplicateNoteUseCase";
+import { ExportNotesUseCase } from "@/application/use-cases/ExportNotesUseCase";
 import { GetNoteUseCase } from "@/application/use-cases/GetNoteUseCase";
 import { ListNotesUseCase } from "@/application/use-cases/ListNotesUseCase";
 import { TogglePinNoteUseCase } from "@/application/use-cases/TogglePinNoteUseCase";
@@ -54,6 +55,7 @@ export const container = {
   duplicateNote: new DuplicateNoteUseCase(noteRepository, uuidGenerator),
   getNote: new GetNoteUseCase(noteRepository),
   listNotes: new ListNotesUseCase(noteRepository),
+  exportNotes: new ExportNotesUseCase(noteRepository),
   updateNote: new UpdateNoteUseCase(noteRepository),
   deleteNote: new DeleteNoteUseCase(noteRepository),
   togglePinNote: new TogglePinNoteUseCase(noteRepository),

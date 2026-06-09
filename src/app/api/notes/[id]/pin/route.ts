@@ -19,6 +19,7 @@ const controller = new NotesController(
   container.deleteNote,
   container.togglePinNote,
   container.duplicateNote,
+  container.exportNotes,
 );
 
 type RouteParams = { params: { id: string } };

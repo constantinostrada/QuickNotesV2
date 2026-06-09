@@ -19,12 +19,13 @@ import type { UpdateNoteDto } from "@/application/use-cases/UpdateNoteUseCase";
 import type { CreateNoteUseCase } from "@/application/use-cases/CreateNoteUseCase";
 import type { DeleteNoteUseCase } from "@/application/use-cases/DeleteNoteUseCase";
 import type { DuplicateNoteUseCase } from "@/application/use-cases/DuplicateNoteUseCase";
+import type { ExportNotesUseCase } from "@/application/use-cases/ExportNotesUseCase";
 import type { GetNoteUseCase } from "@/application/use-cases/GetNoteUseCase";
 import type { ListNotesUseCase } from "@/application/use-cases/ListNotesUseCase";
 import type { TogglePinNoteUseCase } from "@/application/use-cases/TogglePinNoteUseCase";
 import type { UpdateNoteUseCase } from "@/application/use-cases/UpdateNoteUseCase";
 
-import { created, errorResponse, noContent, ok } from "../helpers/apiResponse";
+import { created, errorResponse, jsonDownload, noContent, ok } from "../helpers/apiResponse";
 
 export class NotesController {
   constructor(
@@ -35,6 +36,7 @@ export class NotesController {
     private readonly deleteNote: DeleteNoteUseCase,
     private readonly togglePinNote: TogglePinNoteUseCase,
     private readonly duplicateNote: DuplicateNoteUseCase,
+    private readonly exportNotes: ExportNotesUseCase,
   ) {}
 
   // GET /api/notes?query=...&tags=...&pinnedOnly=true
@@ -48,6 +50,16 @@ export class NotesController {
       };
       const notes = await this.listNotes.execute(dto);
       return ok(notes);
+    } catch (err) {
+      return errorResponse(err);
+    }
+  }
+
+  // GET /api/notes/export
+  async handleExport(_request: NextRequest) {
+    try {
+      const notes = await this.exportNotes.execute();
+      return jsonDownload(notes, "quicknotes-export.json");
     } catch (err) {
       return errorResponse(err);
     }

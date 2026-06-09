@@ -21,6 +21,20 @@ export function noContent(): NextResponse {
   return new NextResponse(null, { status: 204 });
 }
 
+/**
+ * Serialise `data` as a pretty-printed JSON file that the browser
+ * downloads as an attachment with the given filename.
+ */
+export function jsonDownload(data: unknown, filename: string): NextResponse {
+  return new NextResponse(JSON.stringify(data, null, 2), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+    },
+  });
+}
+
 export function errorResponse(error: unknown): NextResponse {
   if (error instanceof NoteNotFoundError) {
     return NextResponse.json({ error: error.message }, { status: 404 });

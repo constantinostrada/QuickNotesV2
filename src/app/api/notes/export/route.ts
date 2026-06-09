@@ -1,8 +1,8 @@
 /**
- * /api/notes — collection endpoint.
+ * /api/notes/export — download all notes as a .json file.
  *
- * GET  → list notes (with optional query/tags/pinnedOnly filters)
- * POST → create a new note
+ * GET → returns every note's title, text and tags as a JSON
+ *       attachment (Content-Disposition: attachment).
  *
  * Layer: interfaces (Next.js App Router route handler)
  */
@@ -24,9 +24,5 @@ const controller = new NotesController(
 );
 
 export async function GET(request: NextRequest) {
-  return controller.handleList(request);
-}
-
-export async function POST(request: NextRequest) {
-  return controller.handleCreate(request);
+  return controller.handleExport(request);
 }
