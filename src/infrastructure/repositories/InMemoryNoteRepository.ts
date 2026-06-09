@@ -9,7 +9,11 @@
 
 import { NoteNotFoundError } from "@/domain/errors/NoteNotFoundError";
 import type { Note } from "@/domain/entities/Note";
-import type { INoteRepository, NoteSearchCriteria } from "@/domain/repositories/INoteRepository";
+import type {
+  INoteRepository,
+  NoteSearchCriteria,
+  NoteSortOrder,
+} from "@/domain/repositories/INoteRepository";
 import { NoteSearchService } from "@/domain/services/NoteSearchService";
 import type { NoteId } from "@/domain/value-objects/NoteId";
 
@@ -25,15 +29,15 @@ export class InMemoryNoteRepository implements INoteRepository {
     return this.store.get(id.value) ?? null;
   }
 
-  async findAll(): Promise<Note[]> {
+  async findAll(sort?: NoteSortOrder): Promise<Note[]> {
     const all = Array.from(this.store.values());
-    return this.searchService.sort(all);
+    return this.searchService.sort(all, sort);
   }
 
   async search(criteria: NoteSearchCriteria): Promise<Note[]> {
     const all = Array.from(this.store.values());
     const filtered = this.searchService.filter(all, criteria);
-    return this.searchService.sort(filtered);
+    return this.searchService.sort(filtered, criteria.sort);
   }
 
   async delete(id: NoteId): Promise<void> {

@@ -8,7 +8,7 @@
  */
 
 import type { Note } from "../entities/Note";
-import type { NoteSearchCriteria } from "../repositories/INoteRepository";
+import type { NoteSearchCriteria, NoteSortOrder } from "../repositories/INoteRepository";
 
 export class NoteSearchService {
   /**
@@ -39,12 +39,21 @@ export class NoteSearchService {
   }
 
   /**
-   * Sort notes: pinned first, then by updatedAt descending.
+   * Sort notes: pinned first, then by the requested order within each group.
+   * - "recent" (default): most-recently-updated first
+   * - "alphabetical": by title A→Z, case-insensitive
    */
-  sort(notes: Note[]): Note[] {
+  sort(notes: Note[], order: NoteSortOrder = "recent"): Note[] {
     return [...notes].sort((a, b) => {
       if (a.isPinned && !b.isPinned) return -1;
       if (!a.isPinned && b.isPinned) return 1;
+
+      if (order === "alphabetical") {
+        return a.title.value.localeCompare(b.title.value, undefined, {
+          sensitivity: "base",
+        });
+      }
+
       return b.updatedAt.getTime() - a.updatedAt.getTime();
     });
   }

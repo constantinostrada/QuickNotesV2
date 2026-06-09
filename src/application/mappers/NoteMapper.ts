@@ -8,6 +8,7 @@
 import type { Note } from "@/domain/entities/Note";
 
 import type { NoteDto } from "../dtos/NoteDto";
+import type { ExportedNoteDto } from "../dtos/ExportedNoteDto";
 
 export class NoteMapper {
   static toDto(note: Note): NoteDto {
@@ -25,5 +26,17 @@ export class NoteMapper {
 
   static toDtoList(notes: Note[]): NoteDto[] {
     return notes.map(NoteMapper.toDto);
+  }
+
+  static toExportedDto(note: Note): ExportedNoteDto {
+    return {
+      title: note.title.value,
+      content: note.content.value,
+      tags: note.tags.map((t) => t.value),
+    };
+  }
+
+  static toExportedDtoList(notes: Note[]): ExportedNoteDto[] {
+    return notes.map(NoteMapper.toExportedDto);
   }
 }
