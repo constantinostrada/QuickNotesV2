@@ -57,7 +57,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {/* Notes grid */}
       {notes.length === 0 ? (
         <EmptyState
-          title={query ? "No matching notes" : "Nothing here yet"}
+          title={query ? "No matching notes" : "No notes yet"}
           description={
             query
               ? `No notes matched "${query}". Try a different search.`

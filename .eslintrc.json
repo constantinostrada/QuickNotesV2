@@ -42,7 +42,6 @@
         "patterns": [
           {
             "group": ["*/infrastructure/*", "@/infrastructure/*"],
-            "importNames": [],
             "message": "Domain and Application layers must not import from Infrastructure."
           }
         ]
