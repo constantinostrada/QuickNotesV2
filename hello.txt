@@ -1,1 +1,1 @@
-hello from cli
+hello world
